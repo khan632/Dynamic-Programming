@@ -20,10 +20,12 @@ public class Main {
         
         dp[0] = 1;
         
-        for(int i = 1; i < dp.length; i++){
-            for(int j = 0; j < arr.length; j++){
-                if(i >= arr[j])
-                    dp[i] += dp[i - arr[j]];
+        for(int amt = 1; amt < dp.length; amt++){
+            for(int coins : arr){
+                    if(amt >= coins){
+                    int remainingAmount = amt - coins;
+                        dp[amt] += dp[remainingAmount];
+                }
             }
         }
         return dp[amount];
