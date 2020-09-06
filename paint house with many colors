@@ -1,0 +1,94 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+=====================================================================================
+          //O(n^3)
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int row = scn.nextInt();
+        int col = scn.nextInt();
+        int[][] arr = new int[row][col];
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                arr[i][j] = scn.nextInt();
+            }
+        }
+        
+        System.out.println(paintHouse(row, col, arr));
+    }
+    
+    public static int paintHouse(int row, int col, int[][] arr){
+        
+        int [][] dp = new int [row][col];
+        
+        for(int j = 0; j < arr[0].length; j++){
+            dp[0][j] = arr[0][j];
+        }
+        
+        for(int i = 1; i < dp.length; i++){
+            for(int j = 0; j < dp[0].length; j++){
+                 int min = Integer.MAX_VALUE;
+                for(int k = 0; k < dp[0].length; k++){
+                    if(k != j){
+                        if(dp[i - 1][k] < min){
+                            min = dp[i - 1][k];
+                        }
+                    }
+                }
+                dp[i][j] = arr[i][j] + min;
+            }
+        }
+        
+        int min = Integer.MAX_VALUE;
+        for(int k = 0; k < dp[0].length; k++){
+            if(dp[row - 1][k] < min){
+                min = dp[row - 1][k];
+            }
+        }
+        return min;
+    }
+    ====================================================================================
+    //O(n^2)
+    
+     public static int paintHouse(int row, int col, int[][] arr){
+        
+        int [][] dp = new int [row][col];
+        int min1 = Integer.MAX_VALUE;
+        int min2 = Integer.MAX_VALUE;
+        for(int j = 0; j < arr[0].length; j++){
+            dp[0][j] = arr[0][j];
+            
+            if(arr[0][j] <= min1){
+                min2 = min1;
+                min1 = arr[0][j];
+            }else if(arr[0][j] <= min2){
+                min2 = arr[0][j];
+            }
+        }
+        
+        for(int i = 1; i < dp.length; i++){
+            int newMin1 = Integer.MAX_VALUE;
+            int newMin2 = Integer.MAX_VALUE;
+            for(int j = 0; j < dp[0].length; j++){
+                if(min1 == dp[i - 1][j]){
+                    dp[i][j] = min2 + arr[i][j];
+                }else{
+                    dp[i][j] = min1 + arr[i][j];
+                }
+                
+                if(dp[i][j] <= newMin1){
+                newMin2 = newMin1;
+                newMin1 = dp[i][j];
+            }else if(dp[i][j] <= newMin2){
+                newMin2 = dp[i][j];
+            }
+            }
+            
+            min1 = newMin1;
+            min2 = newMin2;
+        }
+
+        return min1;
+    }
+}
