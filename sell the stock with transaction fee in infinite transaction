@@ -1,0 +1,40 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        
+        int n = scn.nextInt();
+        int price[] = new int[n];
+        for(int i = 0; i < price.length; i++){
+            price[i] = scn.nextInt();
+        }
+        int fee = scn.nextInt();
+        
+        int oldBuyStateProfit = -price[0];
+        int oldSellStateProfit = 0;
+        
+        for(int i = 1; i < price.length; i++){
+            int newBuyStateProfit = 0;
+            int newSellStateProfit = 0;
+            if(oldSellStateProfit - price[i] > oldBuyStateProfit){
+                newBuyStateProfit = oldSellStateProfit - price[i];
+            }else{
+                newBuyStateProfit = oldBuyStateProfit;
+            }
+            
+            if(oldBuyStateProfit + price[i] - fee > oldSellStateProfit){
+                newSellStateProfit = oldBuyStateProfit + price[i] - fee;
+            }else{
+                newSellStateProfit = oldSellStateProfit;
+            }
+            oldBuyStateProfit = newBuyStateProfit;
+            oldSellStateProfit = newSellStateProfit;
+        }
+        
+        System.out.println(oldSellStateProfit);
+    }
+
+}
