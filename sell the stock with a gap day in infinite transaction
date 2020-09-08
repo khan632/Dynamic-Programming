@@ -1,0 +1,54 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        
+        int n = scn.nextInt();
+        int price[] = new int[n];
+        for(int i = 0; i < n; i++){
+            price[i] = scn.nextInt();
+        }
+        
+        System.out.println(buyandsell(price));
+    }
+    
+    public static int buyandsell(int [] price){
+        int oldBuyState = -price[0];
+        int oldSellState = 0;
+        int oldColdState = 0;
+        
+        for(int i = 1; i < price.length; i++){
+            int newBuyState = 0;
+            int newSellState = 0;
+            int newColdState = 0;
+            
+            if(oldColdState - price[i] > oldBuyState){
+                newBuyState = oldColdState - price[i];
+            }else{
+                newBuyState = oldBuyState;
+            }
+            
+            if(oldBuyState + price[i] > oldSellState){
+                newSellState = oldBuyState + price[i];
+            }else{
+                newSellState = oldSellState;
+            }
+            
+            if(oldColdState < oldSellState){
+                newColdState = oldSellState;
+            }else{
+                newColdState = oldColdState;
+            }
+            
+            oldBuyState = newBuyState;
+            oldSellState = newSellState;
+            oldColdState = newColdState;
+        }
+        
+        return oldSellState;
+    }
+
+}
