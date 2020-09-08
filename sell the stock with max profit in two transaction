@@ -1,0 +1,57 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+       Scanner scn = new Scanner(System.in);
+       
+       int n = scn.nextInt();
+       int [] arr = new int[n];
+       for(int i = 0; i < arr.length; i++){
+           arr[i] = scn.nextInt();
+       }
+       
+       //from left to right
+       int maxSoFar = 0;
+       int leastSoFar = arr[0];
+       int DPleft []= new int[n]; 
+       
+       for(int i = 1; i < arr.length; i++){
+           if(leastSoFar > arr[i]){
+               leastSoFar = arr[i];
+           }
+           maxSoFar = arr[i] - leastSoFar;
+           if(maxSoFar > DPleft[i - 1]){
+               DPleft[i] = maxSoFar;
+           }else{
+               DPleft[i] = DPleft[i - 1];
+           }
+       }
+       
+       int maxBeforeIt = 0;
+       int maxAt = arr[arr.length - 1];
+       int [] DPright = new int [n];
+       
+       for(int i = arr.length - 2; i >= 0; i--){
+           if(maxAt < arr[i]){
+               maxAt = arr[i];
+           }
+           maxBeforeIt = maxAt - arr[i];
+           if(maxBeforeIt > DPright[i + 1]){
+               DPright[i] = maxBeforeIt;
+           }else{
+               DPright[i] = DPright[i + 1];
+           }
+       }
+       
+       int overallProfit = 0;
+       for(int i = 0; i < arr.length; i++){
+           if(DPleft[i] + DPright[i] > overallProfit){
+               overallProfit = DPleft[i] + DPright[i];
+           }
+       }
+       System.out.println(overallProfit);
+    }
+
+}
